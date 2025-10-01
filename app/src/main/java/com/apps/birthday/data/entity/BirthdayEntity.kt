@@ -2,7 +2,7 @@ package com.apps.birthday.data.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import com.apps.birthday.common.AppConstants
+import com.apps.birthday.core.common.AppConstants
 import java.util.UUID
 
 @Entity(tableName = "birthday")

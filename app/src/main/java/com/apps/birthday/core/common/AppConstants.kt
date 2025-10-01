@@ -1,4 +1,4 @@
-package com.apps.birthday.common
+package com.apps.birthday.core.common
 
 object AppConstants {
     const val EMPTY_STRING = ""

@@ -2,7 +2,7 @@ package com.apps.birthday.core.di
 
 import android.content.Context
 import androidx.room.Room
-import com.apps.birthday.common.AppConstants
+import com.apps.birthday.core.common.AppConstants
 import com.apps.birthday.data.BirthdayDatabase
 import com.apps.birthday.data.dao.BirthdayDao
 import dagger.Module
