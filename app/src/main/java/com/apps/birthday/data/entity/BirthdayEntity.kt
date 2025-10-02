@@ -2,12 +2,13 @@ package com.apps.birthday.data.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.apps.birthday.core.common.AppConstants
 import java.util.UUID
 
 @Entity(tableName = "birthday")
 data class BirthdayEntity(
-    @ColumnInfo("id") val id: String = UUID.randomUUID().toString(),
+    @ColumnInfo("id") @PrimaryKey val id: String = UUID.randomUUID().toString(),
     @ColumnInfo("name") val name: String,
     @ColumnInfo("dayOfYear") val dayOfYear: Int,
     @ColumnInfo("monthOfYear") val monthOfYear: Int,
