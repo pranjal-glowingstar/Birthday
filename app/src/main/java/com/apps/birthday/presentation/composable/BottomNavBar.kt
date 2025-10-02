@@ -1,10 +1,43 @@
 package com.apps.birthday.presentation.composable
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddBox
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Upcoming
+import androidx.compose.material.icons.outlined.AddBox
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Upcoming
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
+import androidx.compose.ui.graphics.vector.ImageVector
+import com.apps.birthday.presentation.navigation.Routes
 
 @Composable
-fun BottomNavBar(navController: NavHostController) {
+fun BottomNavBar(currentDestination: Routes, navigate: (Routes) -> Unit) {
 
+    NavigationBar {
+        tabs.forEach { item ->
+            NavigationBarItem(
+                selected = item.route == currentDestination,
+                onClick = { navigate(item.route) },
+                icon = { if (item.route == currentDestination) Icon(item.selectedIcon, "") else Icon(item.unselectedIcon, "") },
+                label = { Text(text = item.label) })
+        }
+    }
 }
+
+val tabs = listOf(
+    BottomNavModel(Routes.Home, Icons.Outlined.Home, Icons.Filled.Home, "Home"),
+    BottomNavModel(Routes.Add, Icons.Outlined.AddBox, Icons.Filled.AddBox, "Add Date"),
+    BottomNavModel(Routes.Upcoming, Icons.Outlined.Upcoming, Icons.Filled.Upcoming, "Upcoming")
+)
+
+data class BottomNavModel(
+    val route: Routes,
+    val unselectedIcon: ImageVector,
+    val selectedIcon: ImageVector,
+    val label: String
+)

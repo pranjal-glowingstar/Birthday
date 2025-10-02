@@ -6,4 +6,5 @@ object AppConstants {
     const val NOTIFICATION_CHANNEL_ID = "birthdayChannel"
     const val CHANNEL_NAME = "BirthdayReminders"
     const val CHANNEL_DESCRIPTION = CHANNEL_NAME + "Description"
+    const val DEBUG_TAG = "BirthdayDebug"
 }
