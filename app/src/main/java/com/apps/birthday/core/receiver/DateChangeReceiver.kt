@@ -13,6 +13,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.apps.birthday.R
 import com.apps.birthday.core.common.AppConstants
+import com.apps.birthday.core.common.AppUtils
 import com.apps.birthday.core.common.DispatcherProvider
 import com.apps.birthday.data.dao.BirthdayDao
 import com.apps.birthday.data.entity.BirthdayEntity
@@ -20,7 +21,6 @@ import com.apps.birthday.presentation.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -33,8 +33,8 @@ class DateChangeReceiver : BroadcastReceiver() {
         context?.let { cntx ->
             if (intent?.action == Intent.ACTION_DATE_CHANGED) {
                 CoroutineScope(DispatcherProvider.getIoDispatcher()).launch {
-                    val currentDate = LocalDate.now().dayOfMonth
-                    val currentMonth = LocalDate.now().monthValue
+                    val currentDate = AppUtils.getCurrentDay()
+                    val currentMonth = AppUtils.getCurrentMonth()
                     val birthdayList =
                         birthdayDao.getAllBirthdaysForGivenDate(currentDate, currentMonth)
                     if (birthdayList.isNotEmpty()) {
@@ -50,7 +50,7 @@ class DateChangeReceiver : BroadcastReceiver() {
         birthdayList.forEachIndexed { index, element ->
             val notification = buildNotification(context).apply {
                 setContentTitle("Today is ${element.name}'s birthday!")
-                setContentText("Congratulate ${element.name} for completing ${LocalDate.now().year - element.year} years and wish for more!")
+                setContentText("Congratulate ${element.name} for completing ${AppUtils.getCurrentYear() - element.year} years and wish for more!")
             }
             with(NotificationManagerCompat.from(context)) {
                 if (ActivityCompat.checkSelfPermission(

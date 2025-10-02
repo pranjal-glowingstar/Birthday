@@ -16,11 +16,12 @@ import com.apps.birthday.presentation.composable.AddScreen
 import com.apps.birthday.presentation.composable.BottomNavBar
 import com.apps.birthday.presentation.composable.HomeScreen
 import com.apps.birthday.presentation.composable.UpcomingScreen
+import com.apps.birthday.presentation.viewmodel.HomeScreenViewModel
 import com.apps.birthday.presentation.viewmodel.MainViewModel
 import kotlinx.serialization.Serializable
 
 @Composable
-fun NavigationComponent(viewModel: MainViewModel) {
+fun NavigationComponent(viewModel: MainViewModel, homeScreenViewModel: HomeScreenViewModel) {
     val navController = rememberNavController()
     val performNavigation by viewModel.navigation.collectAsStateWithLifecycle(initialValue = Routes.Home)
     val currentDestination by viewModel.currentDestination.collectAsStateWithLifecycle(initialValue = Routes.Home)
@@ -44,15 +45,15 @@ fun NavigationComponent(viewModel: MainViewModel) {
     Scaffold(
         modifier = Modifier.safeDrawingPadding(),
         bottomBar = { BottomNavBar(currentDestination, navigate) }) { _ ->
-        Navigation(navController, viewModel)
+        Navigation(navController, viewModel, homeScreenViewModel)
     }
 }
 
 @Composable
-fun Navigation(navController: NavHostController, viewModel: MainViewModel) {
+fun Navigation(navController: NavHostController, viewModel: MainViewModel, homeScreenViewModel: HomeScreenViewModel) {
     NavHost(navController = navController, startDestination = Routes.Home) {
         composable<Routes.Home> {
-            HomeScreen(viewModel)
+            HomeScreen(viewModel, homeScreenViewModel)
         }
         composable<Routes.Add> {
             AddScreen(viewModel)

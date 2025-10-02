@@ -5,6 +5,9 @@ import androidx.room.Room
 import com.apps.birthday.core.common.AppConstants
 import com.apps.birthday.data.BirthdayDatabase
 import com.apps.birthday.data.dao.BirthdayDao
+import com.apps.birthday.repository.BirthdayRepositoryImpl
+import com.apps.birthday.repository.IBirthdayRepository
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,4 +34,14 @@ class BirthdayModule {
     fun provideBirthdayDao(database: BirthdayDatabase): BirthdayDao {
         return database.getBirthdayDao()
     }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class BirthdayBindModule {
+
+    @Binds
+    @Singleton
+    abstract fun getBirthdayRepository(birthdayRepositoryImpl: BirthdayRepositoryImpl): IBirthdayRepository
+
 }
