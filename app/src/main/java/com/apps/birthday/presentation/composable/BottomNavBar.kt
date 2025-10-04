@@ -14,10 +14,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.apps.birthday.presentation.navigation.Routes
 
 @Composable
-fun BottomNavBar(currentDestination: Routes, navigate: (Routes) -> Unit) {
+fun BottomNavBar(navController: NavHostController, navigate: (Routes) -> Unit) {
+
+    val currentDestination = navController.currentBackStackEntryAsState().value?.destination?.route?.let { route ->
+        // This maps the string route back to your sealed class hierarchy
+        when (route) {
+            "com.apps.birthday.presentation.navigation.Routes.Home" -> Routes.Home
+            "com.apps.birthday.presentation.navigation.Routes.Add" -> Routes.Add
+            "com.apps.birthday.presentation.navigation.Routes.Upcoming" -> Routes.Upcoming
+            else -> Routes.Home // Default to a safe value
+        }
+    } ?: Routes.Home
 
     NavigationBar(containerColor = Color.Transparent) {
         tabs.forEach { item ->

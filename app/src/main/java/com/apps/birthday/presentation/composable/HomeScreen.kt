@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,7 +26,6 @@ fun HomeScreen(mainViewModel: MainViewModel, homeScreenViewModel: HomeScreenView
     val birthdays by homeScreenViewModel.birthdayList.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        mainViewModel.setCurrentDestination(Routes.Home)
         mainViewModel.triggerEvent(Analytics.EventName.HOME_SCREEN_LOADED.name)
         homeScreenViewModel.getBirthdayList()
     }
@@ -36,15 +36,16 @@ fun HomeScreen(mainViewModel: MainViewModel, homeScreenViewModel: HomeScreenView
             .padding(horizontal = Semantic.Padding.VAL_12, vertical = Semantic.Padding.VAL_16)
     ) {
         Text(text = stringResource(R.string.welcome_text))
+        Text(text = stringResource(R.string.remember_text))
         if (birthdays.isEmpty()) {
             Cards()
         } else {
-            Column(
+            LazyColumn(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(Semantic.Padding.VAL_12)
             ) {
-                birthdays.forEach { element ->
-                    Cards()
+                items(birthdays.size) { index ->
+                    Cards(birthdays[index])
                 }
             }
         }

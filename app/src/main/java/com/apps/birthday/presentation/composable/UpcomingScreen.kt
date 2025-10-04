@@ -11,7 +11,6 @@ import com.apps.birthday.presentation.viewmodel.MainViewModel
 fun UpcomingScreen(mainViewModel: MainViewModel) {
 
     LaunchedEffect(Unit) {
-        mainViewModel.setCurrentDestination(Routes.Upcoming)
         mainViewModel.triggerEvent(Analytics.EventName.UPCOMING_SCREEN_LOADED.name)
     }
 }

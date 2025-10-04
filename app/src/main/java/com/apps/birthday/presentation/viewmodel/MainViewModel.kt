@@ -13,21 +13,14 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(): ViewModel() {
 
     private val _navigation: MutableSharedFlow<Routes> = MutableSharedFlow()
-    private val _currentDestination: MutableSharedFlow<Routes> = MutableSharedFlow()
     private val _triggerEvent = MutableSharedFlow<String>()
 
     val navigation = _navigation.asSharedFlow()
-    val currentDestination = _currentDestination.asSharedFlow()
     val triggerEvent = _triggerEvent.asSharedFlow()
 
     fun updateNavigationState(route: Routes){
         viewModelScope.launch {
             _navigation.emit(route)
-        }
-    }
-    fun setCurrentDestination(route: Routes){
-        viewModelScope.launch {
-            _currentDestination.emit(route)
         }
     }
     fun triggerEvent(value: String){

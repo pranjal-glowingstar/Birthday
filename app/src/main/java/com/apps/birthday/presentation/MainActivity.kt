@@ -12,6 +12,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.apps.birthday.core.common.AppConstants
 import com.apps.birthday.presentation.navigation.NavigationComponent
+import com.apps.birthday.presentation.viewmodel.AddScreenViewModel
 import com.apps.birthday.presentation.viewmodel.HomeScreenViewModel
 import com.apps.birthday.presentation.viewmodel.MainViewModel
 import com.apps.birthday.ui.theme.BirthdayTheme
@@ -24,6 +25,7 @@ class MainActivity : ComponentActivity() {
 
     private val viewModel: MainViewModel by viewModels()
     private val homeScreenViewModel: HomeScreenViewModel by viewModels()
+    private val addScreenViewModel: AddScreenViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +35,7 @@ class MainActivity : ComponentActivity() {
         }
         setContent {
             BirthdayTheme {
-                NavigationComponent(viewModel, homeScreenViewModel)
+                NavigationComponent(viewModel, homeScreenViewModel, addScreenViewModel)
             }
         }
         addCollectors()

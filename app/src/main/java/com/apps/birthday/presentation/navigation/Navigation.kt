@@ -4,10 +4,8 @@ import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,23 +14,26 @@ import com.apps.birthday.presentation.composable.AddScreen
 import com.apps.birthday.presentation.composable.BottomNavBar
 import com.apps.birthday.presentation.composable.HomeScreen
 import com.apps.birthday.presentation.composable.UpcomingScreen
+import com.apps.birthday.presentation.viewmodel.AddScreenViewModel
 import com.apps.birthday.presentation.viewmodel.HomeScreenViewModel
 import com.apps.birthday.presentation.viewmodel.MainViewModel
+import kotlinx.coroutines.flow.filter
 import kotlinx.serialization.Serializable
 
 @Composable
-fun NavigationComponent(viewModel: MainViewModel, homeScreenViewModel: HomeScreenViewModel) {
-    val navController = rememberNavController()
-    val performNavigation by viewModel.navigation.collectAsStateWithLifecycle(initialValue = Routes.Home)
-    val currentDestination by viewModel.currentDestination.collectAsStateWithLifecycle(initialValue = Routes.Home)
+fun NavigationComponent(viewModel: MainViewModel, homeScreenViewModel: HomeScreenViewModel, addScreenViewModel: AddScreenViewModel) {
 
-    LaunchedEffect(performNavigation) {
-        navController.navigate(performNavigation){
-            popUpTo(navController.graph.startDestinationId) {
-                saveState = true
+    val navController = rememberNavController()
+
+    LaunchedEffect(Unit) {
+        viewModel.navigation.filter { it != null }.collect { route ->
+            navController.navigate(route) {
+                popUpTo(navController.graph.startDestinationId) {
+                    saveState = true
+                }
+                launchSingleTop = true
+                restoreState = true
             }
-            launchSingleTop = true
-            restoreState = true
         }
     }
 
@@ -44,19 +45,19 @@ fun NavigationComponent(viewModel: MainViewModel, homeScreenViewModel: HomeScree
 
     Scaffold(
         modifier = Modifier.safeDrawingPadding(),
-        bottomBar = { BottomNavBar(currentDestination, navigate) }) { _ ->
-        Navigation(navController, viewModel, homeScreenViewModel)
+        bottomBar = { BottomNavBar(navController, navigate) }) { _ ->
+        Navigation(navController, viewModel, homeScreenViewModel, addScreenViewModel)
     }
 }
 
 @Composable
-fun Navigation(navController: NavHostController, viewModel: MainViewModel, homeScreenViewModel: HomeScreenViewModel) {
-    NavHost(navController = navController, startDestination = Routes.Home) {
+fun Navigation(navController: NavHostController, viewModel: MainViewModel, homeScreenViewModel: HomeScreenViewModel, addScreenViewModel: AddScreenViewModel) {
+    NavHost(navController = navController, startDestination = Routes.Add) {
         composable<Routes.Home> {
             HomeScreen(viewModel, homeScreenViewModel)
         }
         composable<Routes.Add> {
-            AddScreen(viewModel)
+            AddScreen(viewModel, addScreenViewModel)
         }
         composable<Routes.Upcoming> {
             UpcomingScreen(viewModel)

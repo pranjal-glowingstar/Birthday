@@ -9,4 +9,8 @@ class BirthdayRepositoryImpl @Inject constructor(private val birthdayDao: Birthd
     override suspend fun getAllBirthdaysForGivenDate(date: Int, month: Int): List<BirthdayEntity> {
         return birthdayDao.getAllBirthdaysForGivenDate(date, month)
     }
+
+    override suspend fun saveBirthday(birthdayEntity: BirthdayEntity): Long {
+        return birthdayDao.saveBirthday(birthdayEntity)
+    }
 }

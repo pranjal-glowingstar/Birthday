@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">Birthday</string>
-    <string name="welcome_text">Hello, here are the today\'s updates</string>
+    <string name="welcome_text">Hello, here are today\'s birthday updates</string>
+    <string name="remember_text">Remember, you deserve that birthday treat</string>
+    <string name="today_birthday">Today\'s Birthdays</string>
+    <string name="name">Name</string>
+    <string name="dob">DOB</string>
+    <string name="relation">Relation</string>
+    <string name="message">Message</string>
+    <string name="name_placeholder">Who\'s birthday it is?</string>
+    <string name="dob_placeholder">Enter DOB (DD/MM/YYYY)</string>
+    <string name="relation_placeholder">How is he related to you?</string>
+    <string name="message_placeholder">Any special message notes?</string>
+    <string name="submit">Submit</string>
 </resources>
