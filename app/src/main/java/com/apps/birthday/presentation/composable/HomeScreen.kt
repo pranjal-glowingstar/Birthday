@@ -50,5 +50,4 @@ fun HomeScreen(mainViewModel: MainViewModel, homeScreenViewModel: HomeScreenView
             }
         }
     }
-
 }

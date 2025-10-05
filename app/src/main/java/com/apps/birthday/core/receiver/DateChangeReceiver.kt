@@ -48,9 +48,9 @@ class DateChangeReceiver : BroadcastReceiver() {
     private fun triggerLocalNotification(context: Context, birthdayList: List<BirthdayEntity>) {
         createNotificationChannel(context)
         birthdayList.forEachIndexed { index, element ->
-            val notification = buildNotification(context).apply {
+            val notification = buildNotification(context, element).apply {
                 setContentTitle("Today is ${element.name}'s birthday!")
-                setContentText("Congratulate ${element.name} for completing ${AppUtils.getCurrentYear() - element.year} years and wish for more!")
+                setContentText("Congratulate ${element.name} for completing ${AppUtils.getCurrentYear() - element.year + 1} years with your given message <${element.message}>")
             }
             with(NotificationManagerCompat.from(context)) {
                 if (ActivityCompat.checkSelfPermission(
@@ -78,9 +78,14 @@ class DateChangeReceiver : BroadcastReceiver() {
         notificationManager.createNotificationChannel(channel)
     }
 
-    private fun buildNotification(context: Context): NotificationCompat.Builder {
+    private fun buildNotification(
+        context: Context,
+        birthdayEntity: BirthdayEntity
+    ): NotificationCompat.Builder {
         val intent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            putExtra(AppConstants.USER_CONTACT, birthdayEntity.contact)
+            putExtra(AppConstants.MESSAGE, birthdayEntity.message)
         }
         val pendingIntent =
             PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
@@ -88,6 +93,7 @@ class DateChangeReceiver : BroadcastReceiver() {
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)
+            .setOngoing(true)
             .setAutoCancel(true)
     }
 }

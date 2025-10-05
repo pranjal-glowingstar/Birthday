@@ -8,4 +8,6 @@ object AppConstants {
     const val CHANNEL_DESCRIPTION = CHANNEL_NAME + "Description"
     const val DEBUG_TAG = "BirthdayDebug"
     const val MIDNIGHT_ACTION = "com.apps.birthday.MIDNIGHT_ALARM"
+    const val USER_CONTACT = "userContact"
+    const val MESSAGE = "message"
 }

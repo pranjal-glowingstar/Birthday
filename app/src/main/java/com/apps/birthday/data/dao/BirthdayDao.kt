@@ -15,10 +15,10 @@ interface BirthdayDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveBirthday(birthdayEntity: BirthdayEntity): Long
 
-    @Query("select * from birthday where monthOfYear >= :month OR (monthOfYear = :month AND dayOfMonth > :day)")
+    @Query("select * from birthday where monthOfYear >= :month OR (monthOfYear = :month AND dayOfMonth > :day) ORDER BY monthOfYear, dayOfMonth")
     suspend fun getUpcomingBirthdaysAfterCurrentMonth(day: Int, month: Int): List<BirthdayEntity>
 
-    @Query("select * from birthday where monthOfYear <= :month OR (monthOfYear = :month AND dayOfMonth < :day)")
+    @Query("select * from birthday where monthOfYear <= :month OR (monthOfYear = :month AND dayOfMonth < :day) ORDER BY monthOfYear, dayOfMonth")
     suspend fun getUpcomingBirthdaysBeforeCurrentMonth(day: Int, month: Int): List<BirthdayEntity>
 
 }
