@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -20,6 +21,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.apps.birthday.R
 import com.apps.birthday.core.analytics.Analytics
+import com.apps.birthday.core.common.AppConstants
+import com.apps.birthday.presentation.composable.common.BirthdayTextField
+import com.apps.birthday.presentation.navigation.Routes
 import com.apps.birthday.presentation.semantics.Semantic
 import com.apps.birthday.presentation.viewmodel.AddScreenViewModel
 import com.apps.birthday.presentation.viewmodel.MainViewModel
@@ -30,7 +34,10 @@ fun AddScreen(mainViewModel: MainViewModel, addScreenViewModel: AddScreenViewMod
     val name by addScreenViewModel.name.collectAsStateWithLifecycle()
     val dob by addScreenViewModel.dob.collectAsStateWithLifecycle()
     val relation by addScreenViewModel.relation.collectAsStateWithLifecycle()
+    val contact by addScreenViewModel.contact.collectAsStateWithLifecycle()
     val message by addScreenViewModel.message.collectAsStateWithLifecycle()
+    val saved by addScreenViewModel.saved.collectAsStateWithLifecycle()
+    val disableSubmit by addScreenViewModel.disableSubmit.collectAsStateWithLifecycle()
 
     val onNameChange: (String) -> Unit = remember {
         {
@@ -47,6 +54,11 @@ fun AddScreen(mainViewModel: MainViewModel, addScreenViewModel: AddScreenViewMod
             addScreenViewModel.updateRelation(it)
         }
     }
+    val onContactChange: (String) -> Unit = remember {
+        {
+            addScreenViewModel.updateContact(it)
+        }
+    }
     val onMessageChange: (String) -> Unit = remember {
         {
             addScreenViewModel.updateMessage(it)
@@ -60,6 +72,24 @@ fun AddScreen(mainViewModel: MainViewModel, addScreenViewModel: AddScreenViewMod
 
     LaunchedEffect(Unit) {
         mainViewModel.triggerEvent(Analytics.EventName.ADD_SCREEN_LOADED.name)
+    }
+
+    LaunchedEffect(saved) {
+        if (saved) {
+            mainViewModel.updateNavigationState(Routes.Home)
+        }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            addScreenViewModel.updateDob(AppConstants.EMPTY_STRING)
+            addScreenViewModel.updateName(AppConstants.EMPTY_STRING)
+            addScreenViewModel.updateMessage(AppConstants.EMPTY_STRING)
+            addScreenViewModel.updateRelation(AppConstants.EMPTY_STRING)
+            addScreenViewModel.updateContact(AppConstants.EMPTY_STRING)
+            addScreenViewModel.updateError(false)
+            addScreenViewModel.updateSaved(false)
+        }
     }
 
     Column(
@@ -114,6 +144,20 @@ fun AddScreen(mainViewModel: MainViewModel, addScreenViewModel: AddScreenViewMod
                 .padding(horizontal = Semantic.Padding.VAL_24),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            Text(text = stringResource(R.string.contact))
+            Spacer(modifier = Modifier.weight(1f))
+            BirthdayTextField(
+                contact,
+                onContactChange,
+                stringResource(R.string.contact_placeholder)
+            )
+        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = Semantic.Padding.VAL_24),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text(text = stringResource(R.string.message))
             Spacer(modifier = Modifier.weight(1f))
             BirthdayTextField(
@@ -123,7 +167,7 @@ fun AddScreen(mainViewModel: MainViewModel, addScreenViewModel: AddScreenViewMod
                 false
             )
         }
-        Button(onClick = onSaveClicked) {
+        Button(onClick = onSaveClicked, enabled = !disableSubmit) {
             Text(text = stringResource(R.string.submit))
         }
     }

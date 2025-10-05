@@ -1,4 +1,4 @@
-package com.apps.birthday.presentation.composable
+package com.apps.birthday.presentation.composable.common
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

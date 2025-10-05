@@ -9,9 +9,10 @@ import com.apps.birthday.core.common.AppConstants
 data class BirthdayEntity(
     @ColumnInfo("id") @PrimaryKey val id: String,
     @ColumnInfo("name") val name: String,
-    @ColumnInfo("dayOfYear") val dayOfYear: Int,
+    @ColumnInfo("dayOfMonth") val dayOfMonth: Int,
     @ColumnInfo("monthOfYear") val monthOfYear: Int,
     @ColumnInfo("year") val year: Int,
     @ColumnInfo("relation") val relation: String,
-    @ColumnInfo("message") val message: String = AppConstants.EMPTY_STRING
+    @ColumnInfo("message") val message: String = AppConstants.EMPTY_STRING,
+    @ColumnInfo("contact") val contact: String
 )

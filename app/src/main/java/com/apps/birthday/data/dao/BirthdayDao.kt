@@ -9,10 +9,16 @@ import com.apps.birthday.data.entity.BirthdayEntity
 @Dao
 interface BirthdayDao {
 
-    @Query("select * from birthday where dayOfYear = :date AND monthOfYear = :month")
+    @Query("select * from birthday where dayOfMonth = :date AND monthOfYear = :month")
     suspend fun getAllBirthdaysForGivenDate(date: Int, month: Int): List<BirthdayEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveBirthday(birthdayEntity: BirthdayEntity): Long
+
+    @Query("select * from birthday where monthOfYear >= :month OR (monthOfYear = :month AND dayOfMonth > :day)")
+    suspend fun getUpcomingBirthdaysAfterCurrentMonth(day: Int, month: Int): List<BirthdayEntity>
+
+    @Query("select * from birthday where monthOfYear <= :month OR (monthOfYear = :month AND dayOfMonth < :day)")
+    suspend fun getUpcomingBirthdaysBeforeCurrentMonth(day: Int, month: Int): List<BirthdayEntity>
 
 }

@@ -11,17 +11,23 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.apps.birthday.presentation.composable.AddScreen
-import com.apps.birthday.presentation.composable.BottomNavBar
+import com.apps.birthday.presentation.composable.common.BottomNavBar
 import com.apps.birthday.presentation.composable.HomeScreen
 import com.apps.birthday.presentation.composable.UpcomingScreen
 import com.apps.birthday.presentation.viewmodel.AddScreenViewModel
 import com.apps.birthday.presentation.viewmodel.HomeScreenViewModel
 import com.apps.birthday.presentation.viewmodel.MainViewModel
+import com.apps.birthday.presentation.viewmodel.UpcomingScreenViewModel
 import kotlinx.coroutines.flow.filter
 import kotlinx.serialization.Serializable
 
 @Composable
-fun NavigationComponent(viewModel: MainViewModel, homeScreenViewModel: HomeScreenViewModel, addScreenViewModel: AddScreenViewModel) {
+fun NavigationComponent(
+    viewModel: MainViewModel,
+    homeScreenViewModel: HomeScreenViewModel,
+    addScreenViewModel: AddScreenViewModel,
+    upcomingScreenViewModel: UpcomingScreenViewModel
+) {
 
     val navController = rememberNavController()
 
@@ -46,13 +52,19 @@ fun NavigationComponent(viewModel: MainViewModel, homeScreenViewModel: HomeScree
     Scaffold(
         modifier = Modifier.safeDrawingPadding(),
         bottomBar = { BottomNavBar(navController, navigate) }) { _ ->
-        Navigation(navController, viewModel, homeScreenViewModel, addScreenViewModel)
+        Navigation(navController, viewModel, homeScreenViewModel, addScreenViewModel, upcomingScreenViewModel)
     }
 }
 
 @Composable
-fun Navigation(navController: NavHostController, viewModel: MainViewModel, homeScreenViewModel: HomeScreenViewModel, addScreenViewModel: AddScreenViewModel) {
-    NavHost(navController = navController, startDestination = Routes.Add) {
+fun Navigation(
+    navController: NavHostController,
+    viewModel: MainViewModel,
+    homeScreenViewModel: HomeScreenViewModel,
+    addScreenViewModel: AddScreenViewModel,
+    upcomingScreenViewModel: UpcomingScreenViewModel
+) {
+    NavHost(navController = navController, startDestination = Routes.Home) {
         composable<Routes.Home> {
             HomeScreen(viewModel, homeScreenViewModel)
         }
@@ -60,7 +72,7 @@ fun Navigation(navController: NavHostController, viewModel: MainViewModel, homeS
             AddScreen(viewModel, addScreenViewModel)
         }
         composable<Routes.Upcoming> {
-            UpcomingScreen(viewModel)
+            UpcomingScreen(viewModel, upcomingScreenViewModel)
         }
     }
 }

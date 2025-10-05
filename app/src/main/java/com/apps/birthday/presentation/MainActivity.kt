@@ -15,6 +15,7 @@ import com.apps.birthday.presentation.navigation.NavigationComponent
 import com.apps.birthday.presentation.viewmodel.AddScreenViewModel
 import com.apps.birthday.presentation.viewmodel.HomeScreenViewModel
 import com.apps.birthday.presentation.viewmodel.MainViewModel
+import com.apps.birthday.presentation.viewmodel.UpcomingScreenViewModel
 import com.apps.birthday.ui.theme.BirthdayTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -26,6 +27,7 @@ class MainActivity : ComponentActivity() {
     private val viewModel: MainViewModel by viewModels()
     private val homeScreenViewModel: HomeScreenViewModel by viewModels()
     private val addScreenViewModel: AddScreenViewModel by viewModels()
+    private val upcomingScreenViewModel: UpcomingScreenViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +37,7 @@ class MainActivity : ComponentActivity() {
         }
         setContent {
             BirthdayTheme {
-                NavigationComponent(viewModel, homeScreenViewModel, addScreenViewModel)
+                NavigationComponent(viewModel, homeScreenViewModel, addScreenViewModel, upcomingScreenViewModel)
             }
         }
         addCollectors()

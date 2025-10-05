@@ -1,4 +1,4 @@
-package com.apps.birthday.presentation.composable
+package com.apps.birthday.presentation.composable.common
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cake
@@ -22,12 +22,11 @@ import com.apps.birthday.presentation.navigation.Routes
 fun BottomNavBar(navController: NavHostController, navigate: (Routes) -> Unit) {
 
     val currentDestination = navController.currentBackStackEntryAsState().value?.destination?.route?.let { route ->
-        // This maps the string route back to your sealed class hierarchy
         when (route) {
             "com.apps.birthday.presentation.navigation.Routes.Home" -> Routes.Home
             "com.apps.birthday.presentation.navigation.Routes.Add" -> Routes.Add
             "com.apps.birthday.presentation.navigation.Routes.Upcoming" -> Routes.Upcoming
-            else -> Routes.Home // Default to a safe value
+            else -> Routes.Home
         }
     } ?: Routes.Home
 

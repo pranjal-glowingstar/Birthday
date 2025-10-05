@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.apps.birthday.R
 import com.apps.birthday.core.analytics.Analytics
-import com.apps.birthday.presentation.navigation.Routes
+import com.apps.birthday.presentation.composable.common.Cards
 import com.apps.birthday.presentation.semantics.Semantic
 import com.apps.birthday.presentation.viewmodel.HomeScreenViewModel
 import com.apps.birthday.presentation.viewmodel.MainViewModel
