@@ -31,7 +31,7 @@ class DateChangeReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
         context?.let { cntx ->
-            if (intent?.action == Intent.ACTION_DATE_CHANGED) {
+            if (intent?.action == AppConstants.MIDNIGHT_ACTION) {
                 CoroutineScope(DispatcherProvider.getIoDispatcher()).launch {
                     val currentDate = AppUtils.getCurrentDay()
                     val currentMonth = AppUtils.getCurrentMonth()
