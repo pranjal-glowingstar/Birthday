@@ -8,4 +8,6 @@ interface IBirthdayRepository {
     suspend fun saveBirthday(birthdayEntity: BirthdayEntity): Long
     suspend fun getUpcomingBirthdaysAfterCurrentMonth(): List<BirthdayEntity>
     suspend fun getUpcomingBirthdaysBeforeCurrentMonth(): List<BirthdayEntity>
+    suspend fun deleteBirthday(id: String)
+    suspend fun getBirthdayById(id: String): BirthdayEntity
 }

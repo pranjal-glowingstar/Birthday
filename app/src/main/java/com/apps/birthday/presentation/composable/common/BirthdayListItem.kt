@@ -13,6 +13,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.ArrowDropUp
+import androidx.compose.material.icons.outlined.DeleteForever
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,7 +34,9 @@ import com.apps.birthday.presentation.semantics.Semantic
 
 @Composable
 fun BirthdayListItem(
-    birthdayEntity: BirthdayEntity
+    birthdayEntity: BirthdayEntity,
+    onEditClicked: (String) -> Unit,
+    onDeleteClicked: (String) -> Unit
 ) {
     var isExpanded by remember { mutableStateOf(false) }
     Column(
@@ -83,6 +87,10 @@ fun BirthdayListItem(
                         Semantic.Padding.VAL_24
                     )
                     .clickable { isExpanded = !isExpanded })
+            Icon(imageVector = Icons.Outlined.Edit, contentDescription = "", modifier = Modifier.size(
+                Semantic.Padding.VAL_24).clickable{ onEditClicked(birthdayEntity.id) }, tint = Color.Green)
+            Icon(imageVector = Icons.Outlined.DeleteForever, contentDescription = "", modifier = Modifier.size(
+                Semantic.Padding.VAL_24).clickable{ onDeleteClicked(birthdayEntity.id) }, tint = Color.Red)
         }
         if (isExpanded) {
             Column(

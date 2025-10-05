@@ -12,8 +12,10 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.apps.birthday.presentation.navigation.Routes
@@ -21,21 +23,20 @@ import com.apps.birthday.presentation.navigation.Routes
 @Composable
 fun BottomNavBar(navController: NavHostController, navigate: (Routes) -> Unit) {
 
-    val currentDestination = navController.currentBackStackEntryAsState().value?.destination?.route?.let { route ->
-        when (route) {
-            "com.apps.birthday.presentation.navigation.Routes.Home" -> Routes.Home
-            "com.apps.birthday.presentation.navigation.Routes.Add" -> Routes.Add
-            "com.apps.birthday.presentation.navigation.Routes.Upcoming" -> Routes.Upcoming
-            else -> Routes.Home
-        }
-    } ?: Routes.Home
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val destination = navBackStackEntry?.destination
 
     NavigationBar(containerColor = Color.Transparent) {
         tabs.forEach { item ->
+            val selected = when (item.route) {
+                is Routes.Home -> destination?.hasRoute<Routes.Home>() == true
+                is Routes.Add -> destination?.hasRoute<Routes.Add>() == true
+                is Routes.Upcoming -> destination?.hasRoute<Routes.Upcoming>() == true
+            }
             NavigationBarItem(
-                selected = item.route == currentDestination,
+                selected = selected,
                 onClick = { navigate(item.route) },
-                icon = { if (item.route == currentDestination) Icon(item.selectedIcon, "") else Icon(item.unselectedIcon, "") },
+                icon = { if (selected) Icon(item.selectedIcon, "") else Icon(item.unselectedIcon, "") },
                 label = { Text(text = item.label) })
         }
     }
@@ -43,7 +44,7 @@ fun BottomNavBar(navController: NavHostController, navigate: (Routes) -> Unit) {
 
 val tabs = listOf(
     BottomNavModel(Routes.Home, Icons.Outlined.Home, Icons.Filled.Home, "Home"),
-    BottomNavModel(Routes.Add, Icons.Outlined.Cake, Icons.Filled.Cake, "Add Date"),
+    BottomNavModel(Routes.Add(), Icons.Outlined.Cake, Icons.Filled.Cake, "Add Date"),
     BottomNavModel(Routes.Upcoming, Icons.Outlined.Upcoming, Icons.Filled.Upcoming, "Upcoming")
 )
 

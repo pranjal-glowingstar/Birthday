@@ -8,11 +8,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.apps.birthday.core.analytics.Analytics
 import com.apps.birthday.presentation.composable.common.BirthdayListItem
+import com.apps.birthday.presentation.navigation.Routes
 import com.apps.birthday.presentation.semantics.Semantic
 import com.apps.birthday.presentation.viewmodel.MainViewModel
 import com.apps.birthday.presentation.viewmodel.UpcomingScreenViewModel
@@ -38,7 +40,17 @@ fun UpcomingScreen(mainViewModel: MainViewModel, upcomingScreenViewModel: Upcomi
             Text(text = "Upcoming Birthdays", style = MaterialTheme.typography.titleLarge)
         }
         items(upcomingBirthdays.size) { index ->
-            BirthdayListItem(upcomingBirthdays[index])
+            val onEditClicked: (String) -> Unit = remember(upcomingBirthdays[index].id) {
+                {
+                    mainViewModel.updateNavigationState(Routes.Add(it))
+                }
+            }
+            val onDeleteClicked: (String) -> Unit = remember(upcomingBirthdays[index].id) {
+                {
+                    upcomingScreenViewModel.deleteBirthday(it)
+                }
+            }
+            BirthdayListItem(upcomingBirthdays[index], onEditClicked, onDeleteClicked)
         }
     }
 }

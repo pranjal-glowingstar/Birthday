@@ -22,4 +22,12 @@ class BirthdayRepositoryImpl @Inject constructor(private val birthdayDao: Birthd
     override suspend fun getUpcomingBirthdaysBeforeCurrentMonth(): List<BirthdayEntity> {
         return birthdayDao.getUpcomingBirthdaysBeforeCurrentMonth(AppUtils.getCurrentDay(), AppUtils.getCurrentMonth())
     }
+
+    override suspend fun deleteBirthday(id: String) {
+        birthdayDao.deleteBirthday(id)
+    }
+
+    override suspend fun getBirthdayById(id: String): BirthdayEntity {
+        return birthdayDao.getBirthdayById(id)
+    }
 }

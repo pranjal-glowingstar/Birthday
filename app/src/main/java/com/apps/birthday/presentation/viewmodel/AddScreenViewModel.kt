@@ -68,12 +68,12 @@ class AddScreenViewModel @Inject constructor(private val birthdayRepository: IBi
         _saved.value = value
     }
 
-    fun saveBirthday() {
+    fun saveBirthday(id: String?) {
         viewModelScope.launch(DispatcherProvider.getIoDispatcher()) {
             val (date, month, year) = getDateMonthYearFromDob()
             if (isValidDob(date, month, year)) {
                 val birthday = BirthdayEntity(
-                    UUID.randomUUID().toString(),
+                    id ?: UUID.randomUUID().toString(),
                     _name.value,
                     date,
                     month,
@@ -95,6 +95,19 @@ class AddScreenViewModel @Inject constructor(private val birthdayRepository: IBi
     }
     private fun checkConstraints(){
         _disableSubmit.value = !(_name.value.isNotEmpty() && _dob.value.length == 8 && _relation.value.isNotEmpty() && _contact.value.isNotEmpty() && _message.value.isNotEmpty())
+    }
+    fun setExistingEntityDetails(id: String?) {
+        id?.let {
+            viewModelScope.launch(DispatcherProvider.getIoDispatcher()) {
+                val entity = birthdayRepository.getBirthdayById(it)
+                _name.value = entity.name
+                _dob.value = entity.dayOfMonth.toString()+entity.monthOfYear.toString()+entity.year.toString()
+                _relation.value = entity.relation
+                _contact.value = entity.contact
+                _message.value = entity.message
+                checkConstraints()
+            }
+        }
     }
 
     private fun getDateMonthYearFromDob(): Triple<Int, Int, Int> {

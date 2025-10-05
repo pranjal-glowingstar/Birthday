@@ -10,10 +10,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.apps.birthday.presentation.composable.AddScreen
-import com.apps.birthday.presentation.composable.common.BottomNavBar
 import com.apps.birthday.presentation.composable.HomeScreen
 import com.apps.birthday.presentation.composable.UpcomingScreen
+import com.apps.birthday.presentation.composable.common.BottomNavBar
 import com.apps.birthday.presentation.viewmodel.AddScreenViewModel
 import com.apps.birthday.presentation.viewmodel.HomeScreenViewModel
 import com.apps.birthday.presentation.viewmodel.MainViewModel
@@ -69,7 +70,8 @@ fun Navigation(
             HomeScreen(viewModel, homeScreenViewModel)
         }
         composable<Routes.Add> {
-            AddScreen(viewModel, addScreenViewModel)
+            val args = it.toRoute<Routes.Add>()
+            AddScreen(viewModel, addScreenViewModel, args.id)
         }
         composable<Routes.Upcoming> {
             UpcomingScreen(viewModel, upcomingScreenViewModel)
@@ -83,7 +85,7 @@ sealed class Routes {
     data object Home : Routes()
 
     @Serializable
-    data object Add : Routes()
+    data class Add(val id: String? = null) : Routes()
 
     @Serializable
     data object Upcoming : Routes()

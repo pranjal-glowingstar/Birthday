@@ -25,5 +25,10 @@ class UpcomingScreenViewModel @Inject constructor(private val birthdayRepository
             _upcomingBirthdays.value = upcomingThisYearBirthdays + upcomingNextYearBirthdays
         }
     }
-
+    fun deleteBirthday(id: String) {
+        viewModelScope.launch(DispatcherProvider.getIoDispatcher()) {
+            birthdayRepository.deleteBirthday(id)
+            getUpcomingBirthdays()
+        }
+    }
 }

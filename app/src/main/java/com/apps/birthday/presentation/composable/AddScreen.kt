@@ -29,7 +29,7 @@ import com.apps.birthday.presentation.viewmodel.AddScreenViewModel
 import com.apps.birthday.presentation.viewmodel.MainViewModel
 
 @Composable
-fun AddScreen(mainViewModel: MainViewModel, addScreenViewModel: AddScreenViewModel) {
+fun AddScreen(mainViewModel: MainViewModel, addScreenViewModel: AddScreenViewModel, id: String?) {
 
     val name by addScreenViewModel.name.collectAsStateWithLifecycle()
     val dob by addScreenViewModel.dob.collectAsStateWithLifecycle()
@@ -66,12 +66,13 @@ fun AddScreen(mainViewModel: MainViewModel, addScreenViewModel: AddScreenViewMod
     }
     val onSaveClicked: () -> Unit = remember {
         {
-            addScreenViewModel.saveBirthday()
+            addScreenViewModel.saveBirthday(id)
         }
     }
 
     LaunchedEffect(Unit) {
         mainViewModel.triggerEvent(Analytics.EventName.ADD_SCREEN_LOADED.name)
+        addScreenViewModel.setExistingEntityDetails(id)
     }
 
     LaunchedEffect(saved) {
