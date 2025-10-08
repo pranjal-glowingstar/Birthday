@@ -32,11 +32,17 @@ fun BottomNavBar(navController: NavHostController, navigate: (Routes) -> Unit) {
                 is Routes.Home -> destination?.hasRoute<Routes.Home>() == true
                 is Routes.Add -> destination?.hasRoute<Routes.Add>() == true
                 is Routes.Upcoming -> destination?.hasRoute<Routes.Upcoming>() == true
+                is Routes.Error -> destination?.hasRoute<Routes.Error>() == true
             }
             NavigationBarItem(
                 selected = selected,
                 onClick = { navigate(item.route) },
-                icon = { if (selected) Icon(item.selectedIcon, "") else Icon(item.unselectedIcon, "") },
+                icon = {
+                    if (selected) Icon(item.selectedIcon, "") else Icon(
+                        item.unselectedIcon,
+                        ""
+                    )
+                },
                 label = { Text(text = item.label) })
         }
     }

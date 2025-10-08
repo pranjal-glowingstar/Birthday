@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.apps.birthday.presentation.composable.AddScreen
+import com.apps.birthday.presentation.composable.ErrorScreen
 import com.apps.birthday.presentation.composable.HomeScreen
 import com.apps.birthday.presentation.composable.UpcomingScreen
 import com.apps.birthday.presentation.composable.common.BottomNavBar
@@ -53,7 +54,13 @@ fun NavigationComponent(
     Scaffold(
         modifier = Modifier.safeDrawingPadding(),
         bottomBar = { BottomNavBar(navController, navigate) }) { _ ->
-        Navigation(navController, viewModel, homeScreenViewModel, addScreenViewModel, upcomingScreenViewModel)
+        Navigation(
+            navController,
+            viewModel,
+            homeScreenViewModel,
+            addScreenViewModel,
+            upcomingScreenViewModel
+        )
     }
 }
 
@@ -76,6 +83,10 @@ fun Navigation(
         composable<Routes.Upcoming> {
             UpcomingScreen(viewModel, upcomingScreenViewModel)
         }
+        composable<Routes.Error> {
+            val args = it.toRoute<Routes.Error>()
+            ErrorScreen(viewModel, args.errorCode, args.errorMessage)
+        }
     }
 }
 
@@ -89,4 +100,7 @@ sealed class Routes {
 
     @Serializable
     data object Upcoming : Routes()
+
+    @Serializable
+    data class Error(val errorCode: String, val errorMessage: String?) : Routes()
 }

@@ -16,9 +16,11 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.apps.birthday.R
 import com.apps.birthday.core.common.AppConstants
 import com.apps.birthday.core.receiver.DateChangeReceiver
 import com.apps.birthday.presentation.navigation.NavigationComponent
+import com.apps.birthday.presentation.navigation.Routes
 import com.apps.birthday.presentation.viewmodel.AddScreenViewModel
 import com.apps.birthday.presentation.viewmodel.HomeScreenViewModel
 import com.apps.birthday.presentation.viewmodel.MainViewModel
@@ -36,14 +38,15 @@ class MainActivity : ComponentActivity() {
     private val homeScreenViewModel: HomeScreenViewModel by viewModels()
     private val addScreenViewModel: AddScreenViewModel by viewModels()
     private val upcomingScreenViewModel: UpcomingScreenViewModel by viewModels()
+    private lateinit var alarmManager: AlarmManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_DENIED) {
             requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1)
         }
-        scheduleMidnightAlarm()
         setContent {
             BirthdayTheme {
                 NavigationComponent(
@@ -64,12 +67,15 @@ class MainActivity : ComponentActivity() {
                     Log.d(AppConstants.DEBUG_TAG, value)
                 }
             }
+            launch {
+                viewModel.settings.collect {
+                    scheduleMidnightAlarm()
+                }
+            }
         }
     }
 
     private fun scheduleMidnightAlarm() {
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
         val intent = Intent(this, DateChangeReceiver::class.java).apply {
             action = AppConstants.MIDNIGHT_ACTION
         }
@@ -97,6 +103,12 @@ class MainActivity : ComponentActivity() {
                     pendingIntent
                 )
             } else {
+                viewModel.updateNavigationState(
+                    Routes.Error(
+                        AppConstants.ALARM_PERMISSION,
+                        getString(R.string.alarm_permission_subtitle)
+                    )
+                )
                 val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
                 startActivity(intent)
             }
@@ -110,4 +122,11 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && alarmManager.canScheduleExactAlarms()) {
+            scheduleMidnightAlarm()
+            viewModel.updateNavigationState(Routes.Home)
+        }
+    }
 }

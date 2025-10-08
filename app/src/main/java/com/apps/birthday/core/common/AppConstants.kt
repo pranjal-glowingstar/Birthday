@@ -10,4 +10,5 @@ object AppConstants {
     const val MIDNIGHT_ACTION = "com.apps.birthday.MIDNIGHT_ALARM"
     const val USER_CONTACT = "userContact"
     const val MESSAGE = "message"
+    const val ALARM_PERMISSION = "ALARM_PERMISSION"
 }

@@ -30,6 +30,9 @@ class DateChangeReceiver : BroadcastReceiver() {
     lateinit var birthdayDao: BirthdayDao
 
     override fun onReceive(context: Context?, intent: Intent?) {
+        if (context?.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_DENIED) {
+            return
+        }
         context?.let { cntx ->
             if (intent?.action == AppConstants.MIDNIGHT_ACTION) {
                 CoroutineScope(DispatcherProvider.getIoDispatcher()).launch {

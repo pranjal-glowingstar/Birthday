@@ -14,4 +14,9 @@
     <string name="contact_placeholder">Phone Number?</string>
     <string name="message_placeholder">Any special message notes?</string>
     <string name="submit">Submit</string>
+    <string name="alarm_permission_title">Alarm Permission Required</string>
+    <string name="alarm_permission_subtitle">Please provide Alarm permission to actively notify about upcoming birthdays and proceed in app</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="unable_to_proceed">Unable to proceed"</string>
+    <string name="goto_settings">Go to Settings</string>
 </resources>

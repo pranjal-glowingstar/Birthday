@@ -27,6 +27,7 @@ fun HomeScreen(mainViewModel: MainViewModel, homeScreenViewModel: HomeScreenView
 
     LaunchedEffect(Unit) {
         mainViewModel.triggerEvent(Analytics.EventName.HOME_SCREEN_LOADED.name)
+        mainViewModel.navigateToSettingsIfRequired()
         homeScreenViewModel.getBirthdayList()
     }
 
