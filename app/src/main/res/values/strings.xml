@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Birthday</string>
-    <string name="welcome_text">Hello, here are today\'s birthday updates</string>
+    <string name="welcome_text">Hello, here are today\'s update</string>
     <string name="remember_text">Remember, you deserve that birthday treat</string>
     <string name="today_birthday">Today\'s Birthdays</string>
     <string name="name">Name</string>
@@ -19,4 +19,9 @@
     <string name="something_went_wrong">Something went wrong</string>
     <string name="unable_to_proceed">Unable to proceed"</string>
     <string name="goto_settings">Go to Settings</string>
+    <string name="add_bd_title">🎉 Ready to track birthdays? 🎉</string>
+    <string name="add_bd_text">Looks like there is no birthday added yet. Tap the \'Add Date\' button below to add your first friend or family member\'s birthday!</string>
+    <string name="no_bd_title">❤️‍🩹🥺 No birthdays today 🥺❤️‍🩹</string>
+    <string name="no_bd_subtitle">Looks like there is no birthdays today. Tap the \'Upcoming\' button below to see your upcoming birthdays!</string>
+    <string name="invalid_contact">Unable to send message. Please check your contact no. and message info</string>
 </resources>

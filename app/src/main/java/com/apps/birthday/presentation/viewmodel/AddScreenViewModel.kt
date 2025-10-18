@@ -36,6 +36,15 @@ class AddScreenViewModel @Inject constructor(private val birthdayRepository: IBi
     val saved = _saved.asStateFlow()
     val disableSubmit = _disableSubmit.asStateFlow()
 
+    fun flushStates(){
+        updateDob(AppConstants.EMPTY_STRING)
+        updateName(AppConstants.EMPTY_STRING)
+        updateMessage(AppConstants.EMPTY_STRING)
+        updateRelation(AppConstants.EMPTY_STRING)
+        updateContact(AppConstants.EMPTY_STRING)
+        updateError(false)
+        updateSaved(false)
+    }
     fun updateName(value: String) {
         _name.value = value
         checkConstraints()

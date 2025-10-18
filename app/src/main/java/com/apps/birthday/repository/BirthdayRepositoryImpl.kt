@@ -15,11 +15,11 @@ class BirthdayRepositoryImpl @Inject constructor(private val birthdayDao: Birthd
         return birthdayDao.saveBirthday(birthdayEntity)
     }
 
-    override suspend fun getUpcomingBirthdaysAfterCurrentMonth(): List<BirthdayEntity> {
+    override suspend fun getUpcomingBirthdaysAfterCurrentDate(): List<BirthdayEntity> {
         return birthdayDao.getUpcomingBirthdaysAfterCurrentMonth(AppUtils.getCurrentDay(), AppUtils.getCurrentMonth())
     }
 
-    override suspend fun getUpcomingBirthdaysBeforeCurrentMonth(): List<BirthdayEntity> {
+    override suspend fun getUpcomingBirthdaysBeforeCurrentDate(): List<BirthdayEntity> {
         return birthdayDao.getUpcomingBirthdaysBeforeCurrentMonth(AppUtils.getCurrentDay(), AppUtils.getCurrentMonth())
     }
 

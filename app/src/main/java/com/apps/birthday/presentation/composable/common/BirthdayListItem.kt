@@ -5,17 +5,24 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowDropDown
-import androidx.compose.material.icons.outlined.ArrowDropUp
-import androidx.compose.material.icons.outlined.DeleteForever
+import androidx.compose.material.icons.filled.Cake
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,8 +32,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import com.apps.birthday.R
 import com.apps.birthday.core.common.AppUtils
 import com.apps.birthday.data.entity.BirthdayEntity
@@ -39,81 +47,129 @@ fun BirthdayListItem(
     onDeleteClicked: (String) -> Unit
 ) {
     var isExpanded by remember { mutableStateOf(false) }
-    Column(
+
+    Card(
         modifier = Modifier
-            .padding(horizontal = Semantic.Padding.VAL_16, vertical = Semantic.Padding.VAL_4)
-            .background(
-                color = Color.Red.copy(0.1f), shape = RoundedCornerShape(
-                    Semantic.Padding.VAL_16
-                )
-            )
+            .fillMaxWidth()
+            .padding(horizontal = Semantic.Padding.VAL_16, vertical = Semantic.Padding.VAL_4),
+        shape = RoundedCornerShape(Semantic.Padding.VAL_16),
+        elevation = CardDefaults.cardElevation(defaultElevation = Semantic.Padding.VAL_4),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = Semantic.Padding.VAL_4, horizontal = Semantic.Padding.VAL_12),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(text = birthdayEntity.name, style = MaterialTheme.typography.titleMedium)
-                Text(
-                    text = AppUtils.getFormattedDate(birthdayEntity),
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-            Spacer(modifier = Modifier.weight(1f))
-            Column(verticalArrangement = Arrangement.Center) {
-                Text(
-                    text = "${AppUtils.getCurrentYear() - birthdayEntity.year + 1} years",
-                    style = MaterialTheme.typography.titleMedium
-                )
-                Text(
-                    text = "(in ${
-                        AppUtils.getDateDifference(
-                            birthdayEntity.dayOfMonth,
-                            birthdayEntity.monthOfYear
-                        )
-                    } days)", style = MaterialTheme.typography.bodyMedium
-                )
-            }
-            Spacer(modifier = Modifier.padding(start = Semantic.Padding.VAL_8))
-            Icon(
-                imageVector = if (!isExpanded) Icons.Outlined.ArrowDropDown else Icons.Outlined.ArrowDropUp,
-                contentDescription = "",
+        Column(modifier = Modifier.fillMaxWidth()) {
+
+            Row(
                 modifier = Modifier
-                    .size(
-                        Semantic.Padding.VAL_24
-                    )
-                    .clickable { isExpanded = !isExpanded })
-            Icon(imageVector = Icons.Outlined.Edit, contentDescription = "", modifier = Modifier.size(
-                Semantic.Padding.VAL_24).clickable{ onEditClicked(birthdayEntity.id) }, tint = Color.Green)
-            Icon(imageVector = Icons.Outlined.DeleteForever, contentDescription = "", modifier = Modifier.size(
-                Semantic.Padding.VAL_24).clickable{ onDeleteClicked(birthdayEntity.id) }, tint = Color.Red)
-        }
-        if (isExpanded) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = Semantic.Padding.VAL_12, vertical = Semantic.Padding.VAL_4)
+                    .fillMaxWidth()
+                    .clickable { isExpanded = !isExpanded }
+                    .padding(Semantic.Padding.VAL_12),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(Semantic.Padding.VAL_8)
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.weight(1f)
                 ) {
-                    Text(text = "${stringResource(R.string.relation)}: ")
-                    Text(text = birthdayEntity.relation)
+                    Text(
+                        text = birthdayEntity.name,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    Text(
+                        text = birthdayEntity.relation,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
                 }
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(Semantic.Padding.VAL_8)
+
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.End,
+                    modifier = Modifier.padding(horizontal = Semantic.Padding.VAL_12)
                 ) {
-                    Text(text = "${stringResource(R.string.contact)}: ")
-                    Text(text = birthdayEntity.contact)
+                    val age = AppUtils.getCurrentYear() - birthdayEntity.year + 1
+                    Text(
+                        text = "$age years",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.tertiary
+                    )
+                    val daysLeft = AppUtils.getDateDifference(
+                        birthdayEntity.dayOfMonth,
+                        birthdayEntity.monthOfYear
+                    )
+                    Text(
+                        text = "(in $daysLeft days)",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(Semantic.Padding.VAL_8)
+
+                Icon(
+                    imageVector = if (isExpanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
+                    contentDescription = if (isExpanded) "Collapse details" else "Expand details",
+                    tint = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.size(Semantic.Padding.VAL_24)
+                )
+            }
+
+            if (isExpanded) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = Semantic.Padding.VAL_16)
+                        .padding(bottom = Semantic.Padding.VAL_12),
+                    verticalArrangement = Arrangement.spacedBy(Semantic.Padding.VAL_4)
                 ) {
-                    Text(text = "${stringResource(R.string.message)}: ")
-                    Text(text = birthdayEntity.message)
+
+                    HorizontalDivider(modifier = Modifier
+                        .height(1.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = Semantic.Padding.VAL_8)
+                        .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f))
+                    )
+
+                    DetailRow(
+                        icon = Icons.Filled.Cake,
+                        label = stringResource(R.string.dob),
+                        value = AppUtils.getFormattedDate(birthdayEntity)
+                    )
+
+                    DetailRow(
+                        icon = Icons.Filled.Phone,
+                        label = stringResource(R.string.contact),
+                        value = birthdayEntity.contact
+                    )
+
+                    if (birthdayEntity.message.isNotBlank()) {
+                        DetailRow(
+                            icon = Icons.Filled.Person,
+                            label = stringResource(R.string.message),
+                            value = birthdayEntity.message,
+                            isMessage = true
+                        )
+                    }
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = Semantic.Padding.VAL_8),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        IconButton(onClick = { onEditClicked(birthdayEntity.id) }) {
+                            Icon(
+                                imageVector = Icons.Outlined.Edit,
+                                contentDescription = "Edit",
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                        IconButton(onClick = { onDeleteClicked(birthdayEntity.id) }) {
+                            Icon(
+                                imageVector = Icons.Outlined.Delete,
+                                contentDescription = "Delete",
+                                tint = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
                 }
             }
         }

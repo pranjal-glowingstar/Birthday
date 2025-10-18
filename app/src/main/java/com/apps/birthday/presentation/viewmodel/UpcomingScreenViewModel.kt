@@ -20,8 +20,8 @@ class UpcomingScreenViewModel @Inject constructor(private val birthdayRepository
 
     fun getUpcomingBirthdays() {
         viewModelScope.launch(DispatcherProvider.getIoDispatcher()) {
-            val upcomingThisYearBirthdays = birthdayRepository.getUpcomingBirthdaysAfterCurrentMonth()
-            val upcomingNextYearBirthdays = birthdayRepository.getUpcomingBirthdaysBeforeCurrentMonth()
+            val upcomingThisYearBirthdays = birthdayRepository.getUpcomingBirthdaysAfterCurrentDate()
+            val upcomingNextYearBirthdays = birthdayRepository.getUpcomingBirthdaysBeforeCurrentDate()
             _upcomingBirthdays.value = upcomingThisYearBirthdays + upcomingNextYearBirthdays
         }
     }

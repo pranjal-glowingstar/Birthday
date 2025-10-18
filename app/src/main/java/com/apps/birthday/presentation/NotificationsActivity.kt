@@ -9,6 +9,7 @@ import androidx.activity.ComponentActivity
 import com.apps.birthday.core.common.AppConstants
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.core.net.toUri
+import com.apps.birthday.R
 
 @AndroidEntryPoint
 class NotificationsActivity: ComponentActivity() {
@@ -37,6 +38,6 @@ class NotificationsActivity: ComponentActivity() {
         finish()
     }
     private fun makeToast() {
-        Toast.makeText(this, "Unable to send message. Please check contact and message", Toast.LENGTH_SHORT).show()
+        Toast.makeText(applicationContext, getString(R.string.invalid_contact), Toast.LENGTH_SHORT).show()
     }
 }

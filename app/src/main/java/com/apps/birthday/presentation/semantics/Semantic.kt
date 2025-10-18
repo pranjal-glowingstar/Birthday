@@ -12,6 +12,7 @@ object Semantic {
         val VAL_20 = 20.dp
         val VAL_24 = 24.dp
         val VAL_32 = 32.dp
+        val VAL_64 = 64.dp
     }
 
 }

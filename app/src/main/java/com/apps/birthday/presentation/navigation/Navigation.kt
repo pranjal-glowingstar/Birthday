@@ -1,5 +1,6 @@
 package com.apps.birthday.presentation.navigation
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -23,6 +24,7 @@ import com.apps.birthday.presentation.viewmodel.UpcomingScreenViewModel
 import kotlinx.coroutines.flow.filter
 import kotlinx.serialization.Serializable
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun NavigationComponent(
     viewModel: MainViewModel,

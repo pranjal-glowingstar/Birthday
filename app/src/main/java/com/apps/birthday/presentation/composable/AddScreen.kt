@@ -21,7 +21,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.apps.birthday.R
 import com.apps.birthday.core.analytics.Analytics
-import com.apps.birthday.core.common.AppConstants
 import com.apps.birthday.presentation.composable.common.BirthdayTextField
 import com.apps.birthday.presentation.navigation.Routes
 import com.apps.birthday.presentation.semantics.Semantic
@@ -83,13 +82,7 @@ fun AddScreen(mainViewModel: MainViewModel, addScreenViewModel: AddScreenViewMod
 
     DisposableEffect(Unit) {
         onDispose {
-            addScreenViewModel.updateDob(AppConstants.EMPTY_STRING)
-            addScreenViewModel.updateName(AppConstants.EMPTY_STRING)
-            addScreenViewModel.updateMessage(AppConstants.EMPTY_STRING)
-            addScreenViewModel.updateRelation(AppConstants.EMPTY_STRING)
-            addScreenViewModel.updateContact(AppConstants.EMPTY_STRING)
-            addScreenViewModel.updateError(false)
-            addScreenViewModel.updateSaved(false)
+            addScreenViewModel.flushStates()
         }
     }
 

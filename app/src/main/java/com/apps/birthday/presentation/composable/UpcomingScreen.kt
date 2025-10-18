@@ -11,9 +11,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.apps.birthday.R
 import com.apps.birthday.core.analytics.Analytics
 import com.apps.birthday.presentation.composable.common.BirthdayListItem
+import com.apps.birthday.presentation.composable.common.EmptyState
 import com.apps.birthday.presentation.navigation.Routes
 import com.apps.birthday.presentation.semantics.Semantic
 import com.apps.birthday.presentation.viewmodel.MainViewModel
@@ -39,18 +42,27 @@ fun UpcomingScreen(mainViewModel: MainViewModel, upcomingScreenViewModel: Upcomi
         item {
             Text(text = "Upcoming Birthdays", style = MaterialTheme.typography.titleLarge)
         }
-        items(upcomingBirthdays.size) { index ->
-            val onEditClicked: (String) -> Unit = remember(upcomingBirthdays[index].id) {
-                {
-                    mainViewModel.updateNavigationState(Routes.Add(it))
-                }
+        if (upcomingBirthdays.isNullOrEmpty()) {
+            item {
+                EmptyState(
+                    stringResource(R.string.add_bd_title),
+                    stringResource(R.string.add_bd_text)
+                )
             }
-            val onDeleteClicked: (String) -> Unit = remember(upcomingBirthdays[index].id) {
-                {
-                    upcomingScreenViewModel.deleteBirthday(it)
+        } else {
+            items(upcomingBirthdays.size) { index ->
+                val onEditClicked: (String) -> Unit = remember(upcomingBirthdays[index].id) {
+                    {
+                        mainViewModel.updateNavigationState(Routes.Add(it))
+                    }
                 }
+                val onDeleteClicked: (String) -> Unit = remember(upcomingBirthdays[index].id) {
+                    {
+                        upcomingScreenViewModel.deleteBirthday(it)
+                    }
+                }
+                BirthdayListItem(upcomingBirthdays[index], onEditClicked, onDeleteClicked)
             }
-            BirthdayListItem(upcomingBirthdays[index], onEditClicked, onDeleteClicked)
         }
     }
 }
